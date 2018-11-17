@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>刚之太极图</title>
+		<style type="text/css">
+			#canv{
+				border: 1px solid red;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="canv" width="500" height="500"></canvas>
+		
+		<script type="text/javascript">
+			//获取画布
+			var canv=document.getElementById("canv");
+			//获取工具栏
+			var ctx=canv.getContext("2d");
+			var x=y=250,r=200;
+			ctx.translate(x,y);
+			
+			(function drawTaiJi(){
+				//绘制大圆
+				ctx.beginPath();
+				ctx.strokeStyle="black";
+				ctx.arc(0,0,r,0,Math.PI*2);
+				ctx.stroke();
+				
+				//画一半黑圆
+				yuan("black",0,0,r,0,180);
+				//画左中球
+				yuan("white",-r/2,0,r/2,0,360);
+				//画右中球
+				yuan("black",r/2,0,r/2,0,360);
+				//画左小球
+				yuan("black",-r/2,0,r/8,0,360);
+				//画右小球
+				yuan("white",r/2,0,r/8,0,360);
+				
+				ctx.rotate(-Math.PI/180);
+				requestAnimationFrame(drawTaiJi);
+			})();
+			
+			//画圆函数
+			function yuan(col,xx,xy,r,x,y){
+				ctx.beginPath();
+				ctx.arc(xx,xy,r,x*Math.PI/180,y*Math.PI/180,false);
+				ctx.closePath();
+				ctx.fillStyle=col;
+				ctx.fill();
+			}
+		</script>
+	</body>
+</html>
+

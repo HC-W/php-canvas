@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>拖拽效果</title>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			#canv{
+				border: 1px solid red;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="canv" width="500" height="500"></canvas>
+		
+		<script type="text/javascript">
+			var canv=document.getElementById("canv");
+			var ctx=canv.getContext("2d");
+			
+			var x=y=r=20;
+			ctx.beginPath();
+			ctx.fillStyle="red";
+			ctx.arc(x,y,r,0,Math.PI*2);
+			ctx.fill();
+			
+			canv.onmousedown=function(ev){
+				var e=ev || window.event;
+				//获取鼠标按下的位置
+				var mouseX=e.clientX;
+				var mouseY=e.clientY;
+				//判断鼠标点击的位置，是否在圆的路径下
+				if(ctx.isPointInPath(mouseX,mouseY)){
+					//获取小球的位置
+					var roundX=x;
+					var roundY=y;
+					
+					//鼠标移动
+					document.onmousemove=function(ev){
+						//在鼠标移动的过程中实时获取鼠标位置
+						var e=ev || window.event;
+						var nowX=e.clientX;
+						var nowY=e.clientY;
+						//计算鼠标的偏移量
+						var chaX=nowX-mouseX;
+						var chaY=nowY-mouseY;
+						//设置圆心位置
+						x=roundX+chaX;
+						y=roundY+chaY;
+						
+						//画圆
+						//清掉画布
+						canv.width=canv.width;
+						//开始绘制
+						ctx.beginPath();
+						ctx.fillStyle="green";
+						ctx.arc(x,y,r,0,Math.PI*2);
+						ctx.fill();
+						
+					}
+				}
+			}
+			document.onmouseup=function(){
+				//鼠标抬起时，变成红色
+				ctx.fillStyle="red";
+				ctx.fill();
+				//让鼠标移动事件失效
+				document.onmousemove=false;
+			}
+		</script>
+	</body>
+</html>

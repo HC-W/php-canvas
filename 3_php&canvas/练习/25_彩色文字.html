@@ -1,0 +1,90 @@
+<!--<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>彩色文字1</title>
+		<style type="text/css">
+			#canv{
+				border: 1px solid red;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="canv" width="500" height="500"></canvas>
+		
+		<script type="text/javascript">
+			//获取画布
+			var canv=document.getElementById("canv");
+			//获取工具栏
+			var ctx=canv.getContext("2d");
+			
+			//1、线性渐变
+			ctx.beginPath();
+			ctx.font="170px '楷体'";
+			ctx.textAlign="center";
+			ctx.textBaseline="middle";
+
+			var textWidth=ctx.measureText("啦啦啦").width;
+//			var myColor=ctx.createLinearGradient(0,250,textWidth,250);
+			//具有渐变的变色
+			var myColor=ctx.createRadialGradient(textWidth/2,250,50,textWidth/2,250,250);
+			//设置渐变颜色
+			myColor.addColorStop(0,"#F6C1CD");
+			myColor.addColorStop(0.25,"#C4C7DB");
+			myColor.addColorStop(0.5,"#8CCEE9");
+			myColor.addColorStop(0.75,"#A9BBE6");
+			myColor.addColorStop(1,"plum");
+			
+			ctx.fillStyle=myColor;
+			ctx.fillText("啦啦啦",250,250);
+			
+		</script>
+	</body>
+</html>
+-->
+	
+	
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			#canv{
+				border: 1px solid red;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="canv" width="500" height="500">
+			浏览器版本不支持
+			flash功能
+		</canvas>
+		<script type="text/javascript">
+			var canv = document.getElementById("canv");
+			//获取功能接口
+			var ctx = canv.getContext("2d");
+			
+			ctx.beginPath();
+			ctx.font = "100px '微软雅黑'";
+			ctx.textAlign = "start";
+			ctx.textBaseline = "middle";
+			//ctx.measureText().width测量文字长度
+			var textWidth = ctx.measureText("啦啦啦").width;
+			//设置渐变
+//			var myColor = ctx.createLinearGradient(0,250,textWidth,250);
+			var myColor = ctx.createRadialGradient(textWidth/2,250,50,textWidth/2,250,150);
+			//设置颜色
+			myColor.addColorStop(0,"pink");
+			myColor.addColorStop(0.5,"skyblue");
+			myColor.addColorStop(1,"plum");
+			
+			//附上颜色
+			ctx.fillStyle = myColor;
+			ctx.fillText("啦啦啦",0,canv.height/2);
+			
+			
+		</script>
+	</body>
+</html>
+

@@ -1,0 +1,136 @@
+<!--<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>面向对象tab切换</title>
+		<style type="text/css">
+			div{
+				width: 200px;
+				height: 200px;
+				background-color: red;
+				color: white;
+				font-size: 100px;
+				text-align: center;
+				display: none;
+			}
+			.click{
+				background-color: yellow;
+			}
+			.active{
+				display: block;
+			}
+		</style>
+	</head>
+	<body>
+		<input class="click" type="button" value="按钮1"/>
+		<input type="button" value="按钮2"/>
+		<input type="button" value="按钮3"/>
+		<div class="active">A</div>
+		<div>B</div>
+		<div>C</div>
+		
+		<script type="text/javascript">
+			//js代码
+			
+			var myDivs=document.querySelectorAll("div");
+			var myBtns=document.querySelectorAll("input");
+			new Tab(myBtns,myDivs);
+			
+			function Tab(btns,divs){
+				var _this=this;
+				this.btns=btns;
+				this.divs=divs;
+				for (var i=0;i<this.btns.length;i++) {
+					this.btns[i].index=i;
+					this.btns[i].onclick=function(){
+						_this.isHide();
+						_this.isShow(this.index);
+					}
+				}
+			}
+			
+			//显示隐藏
+			Tab.prototype.isHide=function(){
+				for (var i=0;i<this.divs.length;i++) {
+					this.btns[i].className="";
+					this.divs[i].className="";
+				}
+			}
+			Tab.prototype.isShow=function(i){
+				this.divs[i].className="active";
+				this.btns[i].className="click";
+			}
+		</script>
+	</body>
+</html>
+-->
+	
+	
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			div{
+				width: 200px;
+				height: 200px;
+				background-color: red;
+				color: white;
+				font-size: 100px;
+				display: none;
+			}
+			.click{
+				background-color: yellow;
+			}
+			.active{
+				display: block;
+			}
+			
+		</style>
+	</head>
+	<body>
+		<input class="click" type="button" value="按钮1" />
+		<input type="button" value="按钮2" />
+		<input type="button" value="按钮3" />
+		<div class="active">A</div>
+		<div>B</div>
+		<div>C</div>
+		
+		<script type="text/javascript">
+			//js
+			
+			var myDivs = document.querySelectorAll("div");
+			var myBtns = document.querySelectorAll("input");
+			
+			new Tab(myBtns,myDivs);
+			
+			function Tab(btns,divs){
+				var _this = this;
+				this.clickIndex = 0;
+				this.btns = btns;
+				this.divs = divs;
+				for(var i = 0; i　<　this.btns.length; i++){
+					this.btns[i].index = i;
+					this.btns[i].onclick = function(){
+						_this.clickIndex = this.index;
+						_this.isHide();
+//						_this.isShow(this.index);
+						_this.isShow();
+					}
+				}
+			}
+			
+			Tab.prototype.isHide = function(){
+				for(var i = 0; i < this.divs.length; i++){
+					this.btns[i].className = "";
+					this.divs[i].className = "";
+				}
+			}
+			Tab.prototype.isShow = function(i){
+				this.divs[this.clickIndex].className = "active";
+				this.btns[this.clickIndex].className = "click";
+			}
+		</script>
+	</body>
+</html>

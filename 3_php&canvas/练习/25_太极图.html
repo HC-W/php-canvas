@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>太极图</title>
+		<style type="text/css">
+			#canv{
+				border: 1px solid red;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="canv" width="500" height="500"></canvas>
+		
+		<script type="text/javascript">
+			//获取画布
+			var canv=document.getElementById("canv");
+			//获取工具栏
+			var ctx=canv.getContext("2d");
+			var deg=0;
+			
+			//调用函数进行画圆
+			setInterval(function(){
+				canv.width=canv.width;
+				ctx.translate(250,250);
+				ctx.rotate(deg*Math.PI/180);
+				
+				yuan("black",0,0,153,0,360);
+				yuan("black",0,0,150,0,360);
+				yuan("white",0,0,150,-90,90);
+				yuan("white",0,-75,75,0,360);
+				yuan("black",0,75,75,0,360);
+				yuan("black",0,-75,20,0,360);
+				yuan("white",0,75,20,0,360);
+				deg-=10;
+			},100);
+			//画圆函数
+			function yuan(col,xx,xy,r,x,y){
+				ctx.beginPath();
+				ctx.arc(xx,xy,r,x*Math.PI/180,y*Math.PI/180,false);
+				ctx.closePath();
+				ctx.fillStyle=col;
+				ctx.fill();
+			}
+		</script>
+	</body>
+</html>
+

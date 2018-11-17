@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>分数类</title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			//分数类
+			function FenNum(upNum,downNum){
+				this.upNum=upNum;
+				this.downNum=downNum;
+			}
+			
+			//输出
+			FenNum.prototype.showNum=function(){
+				if(this.downNum==1){
+					//分母是1，直接输出分子
+					console.log(this.upNum);
+				}else{
+					console.log(this.upNum+"/"+this.downNum);
+				}
+			}
+			//约分
+			FenNum.prototype.yueFen=function(){
+				//最大公约数
+				//获取分子分母的最小值
+				var minNum=Math.abs(this.upNum)>Math.abs(this.downNum)?Math.abs(this.downNum):Math.abs(this.upNum);
+				//从大到小进行遍历，找最大公约数
+				for (var i=minNum;i>1;i--) {
+					//判断整除i
+					if(Math.abs(this.upNum)%i==0 && Math.abs(this.downNum)%i==0){
+						//约分
+						this.upNum/=i;
+						this.downNum/=i;
+						//找到就跳出循环
+						break;
+					}
+				}
+			}
+			
+			//分数运算
+			FenNum.prototype.addNum=function(num){
+				//先通分，在进行加减运算，再约分
+				var newFenNum=new FenNum();
+				//设置分子分母
+				newFenNum.upNum=this.upNum*num.downNum+this.downNum*num.upNum;
+				newFenNum.downNum=this.downNum*num.downNum;
+				//约分
+				newFenNum.yueFen();
+				return newFenNum;
+			}
+			
+			FenNum.prototype.jianNum=function(num){
+				//先通分，在进行加减运算，再约分
+				var newFenNum=new FenNum();
+				//设置分子分母
+				newFenNum.upNum=this.upNum*num.downNum-this.downNum*num.upNum;
+				newFenNum.downNum=this.downNum*num.downNum;
+				//约分
+				newFenNum.yueFen();
+				return newFenNum;
+			}
+			
+			
+			var num1=new FenNum(8,9);
+			num1.yueFen();
+			num1.showNum();
+			
+			var num2=new FenNum(4,5);
+			num2.addNum(num1).showNum();
+			num2.jianNum(num1).showNum();
+		</script>
+	</body>
+</html>

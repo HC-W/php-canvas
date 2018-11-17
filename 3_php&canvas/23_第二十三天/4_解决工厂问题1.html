@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			function Person(name,sex){
+				this.name = name;
+				this.sex = sex;
+				this.sayName = function(){
+					console.log(this.name);
+				}
+			}
+			//构造函数
+			//主要用来实例化对象，与new在一起使用
+			var person1=new Person("sb","女");
+			person1.sayName();
+			var person2=new Person("ff","女");
+			person2.sayName();
+			console.log(person1.sayName == person2.sayName);
+		</script>
+	</body>
+</html>

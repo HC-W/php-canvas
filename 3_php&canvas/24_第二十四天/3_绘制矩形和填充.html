@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>绘制矩形和填充</title>
+		<style type="text/css">
+			#canv{
+				border: 1px solid red;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="canv" width="500" height="500"></canvas>
+		<script type="text/javascript">
+			var ctx=document.getElementById("canv");
+			var ctx=canv.getContext("2d");
+			//绘制矩形
+			//1、rect
+			//2、strokeRect
+			//区别：strokeRect不可以被填充
+			
+			ctx.beginPath();
+//			ctx.rect(200,200,200,100);
+//			ctx.stroke();
+			//  起始点X，起始点Y，宽度，高度
+			ctx.strokeRect(100,100,200,200);
+			
+			//填充（油漆桶）
+			//1、fill,注意：如果路径是开口的，会按闭合路径进行填充
+			//2、fillRect
+			//设置填充的颜色
+			ctx.fillStyle="red";
+//			ctx.fill();
+			ctx.fillRect(300,0,100,200);
+		</script>
+	</body>
+</html>

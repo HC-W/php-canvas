@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>工厂模式</title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			
+			//工厂模式:
+			//原料-加工-出厂
+			//参数-函数体-返回值
+			
+			function createObj(name,sex){
+				//创建对象
+				var newPerson=new Object();
+				newPerson.name=name;
+				newPerson.sex=sex;
+				newPerson.sayName=function(){
+					console.log(this.name);
+				}
+				return newPerson;
+			}
+			var person1=createObj("hh","男");
+			person1.sayName();
+			var person2=createObj("hz","女");
+			person2.sayName();
+			
+			console.log(person1.sayName==person2.sayName);
+			
+			/*
+			 工厂模式弊端:
+			 1、没有new:有new叫做实例化，没有new是调用函数
+			 有new存储在内存堆中，没有new存储在栈中
+			 堆的存储空间大于栈的存储空间
+			 2、地址指向不同，每次使用工厂模式去创建对象，都会开辟新的空间
+			 浪费资源
+			 */
+		</script>
+	</body>
+</html>

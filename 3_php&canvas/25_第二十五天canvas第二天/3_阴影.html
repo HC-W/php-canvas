@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>阴影</title>
+	<style type="text/css">
+			#canv{
+				border: 1px solid red;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="canv" width="500" height="500"></canvas>
+		
+		<script type="text/javascript">
+			var canv=document.getElementById("canv");
+			//获取功能接口
+			var ctx=canv.getContext("2d");
+			ctx.beginPath();
+			
+			ctx.font="italic 50px '楷体'";
+			ctx.textAlign="center";
+			ctx.textBaseline="middle";
+			
+			//设置阴影
+			//设置阴影颜色
+			ctx.shadowColor="red";
+			//阴影模糊度
+			ctx.shadowBlur=5;
+			//阴影偏移量
+			//横向偏移
+			ctx.shadowOffsetX=5;
+			//纵向偏移
+			ctx.shadowOffsetY=5;
+			
+			ctx.fillText("beautiful girl",230,230);
+//			ctx.strokeText("beautiful girl",230,230);
+			
+		</script>
+	</body>
+</html>

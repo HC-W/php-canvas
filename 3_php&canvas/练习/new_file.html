@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,
+    user-scalable=0,user-scalable=no,minimal-ui">
+    	<style type="text/css">
+    		*{
+    			margin: 0;
+    		}
+    		html,body{
+    			height: 100%;
+    			overflow: hidden;
+    		}
+    	</style>
+	</head>
+	<body>
+		<canvas id="canv">
+			浏览器版本不支持
+			flash功能
+		</canvas>
+		<script type="text/javascript">
+			var canv = document.getElementById("canv");
+			//获取功能接口
+			var ctx = canv.getContext("2d");
+			canv.width=document.body.offsetWidth;
+			canv.height=document.body.offsetHeight;
+			ctx.beginPath();
+			var newImage=new Image();
+			newImage.src="../img/tanke/background_2.png";
+			var plane1=new Image();
+			plane1.src="../img/tanke/enemy1_fly_1.png";
+			var plane2=new Image();
+			plane2.src="../img/tanke/enemy3_fly_1.png";
+			var plane3=new Image();
+			plane3.src="../img/tanke/enemy1_fly_1.png";
+			var myplane=new Image();
+			ctx.beginPath();
+			myplane.src="../img/tanke/hero_fly_1.png";
+			newImage.onload=function(){
+				var speed=5;
+				var x=0;
+				var y=0;
+				drawbag();
+				function drawbag(){
+					window.width=window.width;
+					ctx.drawImage(newImage,x,y,canv.width,canv.height);
+					ctx.drawImage(newImage,x,y-canv.height,canv.width,canv.height);
+					if(y>=canv.height){
+						y-=canv.height;
+					}
+					y+=speed;
+					requestAnimationFrame(drawbag);
+				}
+				
+			}
+			plane1.onload=function(){
+				var speedfly=1;
+				var plane1x=rand(0,canv.width-plane1.width);
+				var plane1y=-plane1.height;
+				drawplane1();
+				function drawplane1(){
+					window.width=window.width;
+					plane1y+=speedfly;
+					ctx.drawImage(plane1,plane1x,plane1y,plane1.width,plane1.width);
+					if(plane1y>=canv.height){
+						plane1y-=plane1y+plane1.height;
+						plane1x=rand(0,canv.width-plane1.width);
+					}
+					plane1y+=speedfly;
+					requestAnimationFrame(drawplane1);
+				}
+			}
+			plane2.onload=function(){
+				var speedfly=1.5;
+				var plane2x=rand(0,canv.width-plane2.width);
+				var plane2y=-plane2.height;
+				drawplane2();
+				function drawplane2(){
+					window.width=window.width;
+					plane2y+=speedfly;
+					ctx.drawImage(plane2,plane2x,plane2y,plane2.width,plane2.width);
+					if(plane2y>=canv.height){
+						plane2y-=plane2y+plane2.height;
+						plane2x=rand(0,canv.width-plane2.width);
+					}
+					plane2y+=speedfly;
+					requestAnimationFrame(drawplane2);
+				}
+			}
+			plane3.onload=function(){
+				var speedfly=2;
+				var plane3x=rand(0,canv.width-plane3.width);
+				var plane3y=-plane3.height;
+				drawplane3();
+				function drawplane3(){
+					window.width=window.width;
+					plane3y+=speedfly;
+					ctx.drawImage(plane3,plane3x,plane3y,plane3.width,plane3.width);
+					if(plane3y>=canv.height){
+						plane3y-=plane3y+plane3.height;
+						plane3x=rand(0,canv.width-plane3.width);
+					}
+					plane3y+=speedfly;
+					requestAnimationFrame(drawplane3);
+				}
+			}
+			myplane.onload=function(){
+				var x=(canv.width-myplane.width)/2+myplane.width/2;
+				var y=canv.height-myplane.height;
+				herofly();
+				function herofly(){
+					ctx.drawImage(myplane,x,y,myplane.width,myplane.height);
+					requestAnimationFrame(herofly);
+				}
+				canv.onmousedown=function(ev){
+					console.log(123);
+					var e=ev||window.event;
+					var mousex=e.clientX;
+//					console.log(ctx.isPointInPath(mousex,mousey))
+//					if(ctx.isPointInPath(mousex,mousey)){
+						canv.onmousemove=function(ev){
+							console.log(x);
+							var e=ev||window.event;
+							var nowx=e.clientX;
+							var chax=nowx-mousex;
+							x+=chax;
+							herofly();
+//						}
+					}
+				}
+			}
+			
+            function rand(min,max){
+				return Math.floor(Math.random()*(max+1-min)+min);
+			}
+		</script>
+	</body>
+
+</html>

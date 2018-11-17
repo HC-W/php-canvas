@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>圆球碰撞</title>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			#canv{
+				border: 1px solid red;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="canv" width="500" height="500"></canvas>
+		<script type="text/javascript">
+			//获取画布
+			var canv=document.getElementById("canv");
+			//获取工具栏
+			var ctx=canv.getContext("2d");
+			var gX=gY=200;
+			var gR=80;
+			function greenKuang(col){
+				//绘制绿球
+				ctx.beginPath();
+				ctx.fillStyle=col;
+				ctx.arc(gX,gY,gR,0,Math.PI*2);
+				ctx.fill();
+			}
+			
+			//绘制小红球
+			var rX=rY=20;
+			var rR=20;
+			function redKuang(){
+				ctx.beginPath();
+				ctx.fillStyle="red";
+				ctx.arc(rX,rY,rR,0,Math.PI*2);
+				ctx.fill();
+			}
+			greenKuang("green");
+			redKuang()
+			//鼠标按下事件
+			canv.onmousedown=function(ev){
+				var e=ev || window.event;
+				//获取鼠标按下的位置
+				var mouseX=e.clientX;
+				var mouseY=e.clientY;
+				//判断鼠标点击的位置，是否在红框的路径下
+				if(ctx.isPointInPath(mouseX,mouseY)){
+					//获取小球位置
+					var roundX=rX;
+					var roundY=rY;
+					//鼠标移动事件
+					document.onmousemove=function(ev){
+						//在鼠标移动过程中实时获取鼠标位置
+						var e=ev || window.event;
+						var nowX=e.clientX;
+						var nowY=e.clientY;
+						//计算鼠标的偏移量
+						var chaX=nowX-mouseX;
+						var chaY=nowY-mouseY;
+						//设置圆心位置
+						rX=roundX+chaX;
+						rY=roundY+chaY;
+//						//边界判断
+						if(rX-rR<0){
+							rX=rR;
+						}else if(rX+rR>canv.width){
+							rX=canv.width-rR;
+						}
+						if(rY-rR<0){
+							rY=rR;
+						}else if(rY+rR>canv.height){
+							rY=canv.height-rR;
+						}
+						//画圆
+						//清除画布
+						canv.width=canv.width;
+						//判断条件
+						var yuanchaX=Math.abs(gX-rX);
+						var yuanchaY=Math.abs(gY-rY);
+						var yuanchaZ=Math.sqrt(Math.pow(yuanchaX,2)+Math.pow(yuanchaY,2));
+						if(yuanchaZ<=rR+gR){
+							greenKuang("black");
+						}else{
+							greenKuang("green");
+						}
+						redKuang();
+					}
+				}
+			}
+			//鼠标抬起事件
+			document.onmouseup=function(){
+				document.onmousemove=false;
+			}
+		</script>
+	</body>
+</html>

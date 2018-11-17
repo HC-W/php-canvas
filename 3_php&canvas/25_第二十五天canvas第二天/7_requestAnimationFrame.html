@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			#canv{
+				border: 1px solid red;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="canv" width="500" height="500"></canvas>
+		
+		<script type="text/javascript">
+			var canv=document.getElementById("canv");
+			var ctx=canv.getContext("2d");
+			
+			var index=0;
+			function hello(){
+				console.log("hello world");
+				index++;
+				//递归：函数自身调用自身
+				//新定时器
+				//优势：减少CPU开销，减小内存压力
+				//缺点：没有第二个参数，无法直接设置间隔时间
+				
+				//默认情况是1秒60帧左右
+			
+				//慢下来，间隔时间：延迟定时器
+//				setTimeout(function(){
+//					requestAnimationFrame(hello);
+//				},1000);
+
+				//停止:cancelAnimationFrame()
+				setTimeout(function(){
+					if(index!=3){
+						var newTimer=requestAnimationFrame(hello);
+					}else{
+						cancelAnimationFrame(newTimer);
+					}
+				},1000);
+			}
+			hello();
+		</script>
+	</body>
+</html>

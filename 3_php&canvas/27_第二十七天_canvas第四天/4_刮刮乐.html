@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>刮刮乐</title>
+		<style type="text/css">
+			#canv{
+				border: 1px solid red;
+				background: url(../img/中奖.jpg) no-repeat;
+				background-size: 100% 100%;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="canv" width="600" height="422.5"></canvas>
+		<script type="text/javascript">
+			var canv=document.getElementById("canv");
+			var ctx=canv.getContext("2d");
+			//绘制上面覆盖的刮奖层
+			//目的图像
+			ctx.beginPath();
+			ctx.fillStyle="darkgray";
+			ctx.rect(0,0,canv.width,canv.height);
+			ctx.fill();
+			//叠加效果
+			//源图像之外的目的图像会显示，源图像变透明
+			ctx.globalCompositeOperation="destination-out";
+			//鼠标按下事件
+			canv.onmousedown=function(ev){
+				var e=ev || window.event;
+				//鼠标位置
+				var mouseX=e.clientX-canv.offsetLeft;
+				var mouseY=e.clientY-canv.offsetTop;
+				//绘制图像用来刮奖
+				//源图像
+				ctx.beginPath();
+				ctx.lineWidth=20;
+				ctx.moveTo(mouseX,mouseY);
+				//鼠标移动事件
+				canv.onmousemove=function(ev){
+					//定义透明度为0的像素点的数量
+					var alphaPixelCount=0;
+					var e=ev || window.event;
+					var nowX=e.clientX-canv.offsetLeft;
+					var nowY=e.clientY-canv.offsetTop;
+//					ctx.beginPath();
+//					ctx.arc(nowX,nowY,10,0,Math.PI*2);
+//					ctx.fill();
+					ctx.lineTo(nowX,nowY);
+					ctx.stroke();
+					//获取像素
+					var myPixel=ctx.getImageData(0,0,canv.width,canv.height);
+					//获取所有像素点，返回值是一个数组
+					var pixelData=myPixel.data;
+					//遍历，找出有多少个透明的像素点
+					for (var i=0;i<pixelData.length;i+=4) {
+						//每一个像素点的透明度
+						var al=pixelData[i+3];
+						//判断该像素的alpha是否为0
+						if(al==0){
+							alphaPixelCount++;
+						}
+					}
+					//判断透明像素点的数量是否大于等于所有像素点的7成
+					if(alphaPixelCount>=pixelData.length/4*0.6){
+						ctx.clearRect(0,0,canv.width,canv.height);
+					}
+				}
+			}
+			document.onmouseup=function(){
+				canv.onmousemove=false;
+			}
+		</script>
+	</body>
+</html>

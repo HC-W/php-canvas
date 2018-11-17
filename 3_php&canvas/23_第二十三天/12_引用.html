@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>引用</title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			//new构造对象，实例化函数
+			//只在数组中有这个特点
+			//占用同一个地址空间，任意一个改变其他都会改变
+			var arr1=new Array(1,2,3);
+			var arr2=arr1;
+			
+			arr2.push(4);
+			console.log(arr2);
+			console.log(arr1);
+			
+			//-------------------------------------
+			
+			var arr3=new Array(1,2,3);
+			var arr4=[];
+			for (var i=0;i<arr3.length;i++) {
+				arr4[i]=arr3[i];
+			}
+			arr4.push(4);
+			console.log(arr3);
+			console.log(arr4);
+		</script>
+	</body>
+</html>

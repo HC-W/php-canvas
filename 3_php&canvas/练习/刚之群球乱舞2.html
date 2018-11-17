@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>刚之群球乱舞2</title>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+				line-height: 0;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="canv"></canvas>
+		<script src="../js/封装函数.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			var canv=document.getElementById("canv");
+			canv.width=document.documentElement.clientWidth;
+			canv.height=document.documentElement.clientHeight;
+			var ctx=canv.getContext("2d");
+			//声明球类
+			function Qiu(){
+				this.maxR=rand(70,100);
+				this.minR=rand(10,20);
+				this.r=rand(20,50);
+				this.x=rand(this.maxR,canv.width-this.maxR);
+				this.y=rand(this.maxR,canv.height-this.maxR);
+				//随机颜色
+				this.c=thisRandColor(0,255);
+				//随机放大的半径和最小的半径
+				
+				//随机速度
+				this.changeSpeed=rand(2,3);
+				//随机先放大还是先缩小
+				this.changeSpeed=rand(1,2)==1?-this.changeSpeed:this.changeSpeed;
+			}
+			//改变大小
+			Qiu.prototype.changeSize=function(){
+				//判断改变方向的边界
+				if(this.r>this.maxR || this.r<this.minR){
+					//变大还是缩小
+					this.changeSpeed=-this.changeSpeed;
+				}
+				this.r+=this.changeSpeed;
+				
+			}
+			//绘制
+			Qiu.prototype.drawQiu=function(){
+				ctx.beginPath();
+				ctx.fillStyle=this.c;
+				ctx.arc(this.x,this.y,this.r,0,Math.PI*2);
+				ctx.fill();
+			}
+			//实例化
+			var qiuNum=30;
+			function createQiu(){
+				var qiuArr=[];
+				for (var i=0;i<qiuNum;i++) {
+					var newQiu=new Qiu();
+					qiuArr.push(newQiu);
+				}
+				return qiuArr;
+			}
+			(function qiuHigh(){
+				var qius=createQiu();
+				setInterval(function(){
+					canv.width=canv.width;
+					for (var i=0;i<qius.length;i++) {
+						qius[i].changeSize();
+						qius[i].drawQiu();
+					}
+				},50);
+			})();
+		</script>
+	</body>
+</html>
+

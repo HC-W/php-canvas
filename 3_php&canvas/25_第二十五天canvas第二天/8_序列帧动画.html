@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>序列帧动画</title>
+		<style type="text/css">
+			#canv{
+				border: 1px solid red;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="canv" width="500" height="500"></canvas>
+		
+		<script type="text/javascript">
+			var canv=document.getElementById("canv");
+			var ctx=canv.getContext("2d");
+			//设置当前显示哪一帧动画
+			var index=0;
+			var newImage=new Image();
+			newImage.src="../img/2.png";
+			newImage.onload=function(){
+				var bili=newImage.width/4/newImage.height;
+				move();
+				
+				function move(){
+					//清除画布
+//					canv.width=canv.width;
+					ctx.clearRect(0,0,canv.width,canv.height);
+					
+					ctx.drawImage(newImage,index*newImage.width/4,0,newImage.width/4,newImage.height,100,100,200,200/bili);
+					//显示的帧图片++
+					index++;
+					if(index>3){
+						index=0;
+					}
+					//递归
+					setTimeout(function(){
+						requestAnimationFrame(move);
+					},400);
+				}
+				
+			}
+			
+			
+		</script>
+	</body>
+</html>

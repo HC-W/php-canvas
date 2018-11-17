@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>小球乱撞</title>
+		<style type="text/css">
+			#canv{
+				border: 1px solid red;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="canv" width="800" height="500"></canvas>
+		<script src="../js/封装函数.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			var canv=document.getElementById("canv");
+			var ctx=canv.getContext("2d");
+			//实例化对象
+			//声明一个数组
+			var yuanArr=[];
+			var count=20;
+			//遍历添加小球
+			for (var i=0;i<count;i++) {
+				//把小球放进数组
+				yuanArr[i]=new Yuan();
+			}
+			function Yuan(){
+				//半径
+				var r=rand(10,60);
+				//属性
+				//宽
+				this.x=rand(r,canv.width-r);
+				//高
+				this.y=rand(r,canv.height-r);
+				//半径
+				this.r=r;
+				this.color=thisRandColor(0,200);
+				this.speedX=rand(1,5);
+				this.speedY=rand(1,5);
+				//向右向下的条件判定
+				this.isYou=true;
+				this.isXia=true;
+			}
+			//行为
+			Yuan.prototype.move=function(){
+				//边界判断
+				if(this.x<=this.r){
+					this.isYou=true;
+				}else if(this.x+this.r>=canv.width){
+					this.isYou=false;
+				}
+				if(this.y<=this.r){
+					this.isXia=true;
+				}else if(this.y+this.r>=canv.height){
+					this.isXia=false;
+				}
+				//移动
+				if(this.isYou){
+					this.x+=this.speedX;
+				}else if(this.isYou==false){
+					this.x-=this.speedX;
+				}
+				if(this.isXia){
+					this.y+=this.speedY;
+				}else if(this.isXia==false){
+					this.y-=this.speedY;
+				}
+				ctx.beginPath();
+				ctx.fillStyle=this.color;
+				ctx.arc(this.x,this.y,this.r,0,Math.PI*2);
+				ctx.fill();
+			}
+			setInterval(function(){
+				//清画布
+				//位置放置顺序会影响小球的个数：放在move中只有一个小球，每运行一次其他的都会被清掉
+				canv.width=canv.width;
+				for (var k=0;k<count;k++) {
+					//每一个小球都移动
+					yuanArr[k].move();
+				}
+			},10);
+		</script>
+	</body>
+</html>
+
+
+	
+	
+	
+

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>刚之群球乱舞</title>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+				line-height: 0;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="canv"></canvas>
+		<script src="../js/封装函数.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			var canv=document.getElementById("canv");
+			canv.width=document.documentElement.clientWidth;
+			canv.height=document.documentElement.clientHeight;
+			var ctx=canv.getContext("2d");
+			//声明球类
+			function Qiu(){
+				this.r=rand(20,50);
+				this.x=rand(this.r,canv.width-this.r);
+				this.y=rand(this.r,canv.height-this.r);
+				//随机速度
+				this.speedX=rand(1,3);
+				this.speedY=rand(1,3);
+				//随机方向
+				this.speedX=rand(1,2)==1?-this.speedX:this.speedX;
+				this.speedY=rand(1,2)==1?-this.speedY:this.speedY;
+				//随机颜色
+				this.c=thisRandColor(0,255);
+			}
+			
+			//移动
+			Qiu.prototype.move=function(){
+				//移动
+				this.x+=this.speedX;
+				this.y+=this.speedY;
+				//判断边界
+				if(this.x<this.r || this.x>canv.width-this.r){
+					this.speedX=-this.speedX;
+				}
+				if(this.y<this.r || this.y>canv.height-this.r){
+					this.speedY=-this.speedY;
+				}
+			}
+			//绘制
+			Qiu.prototype.drawQiu=function(){
+				ctx.beginPath();
+				ctx.fillStyle=this.c;
+				ctx.arc(this.x,this.y,this.r,0,Math.PI*2);
+				ctx.fill();
+			}
+			//生成球的数量
+			var qiuNum=30;
+			//实例化球
+			function createQiu(){
+				var qiuArr=[];
+				for (var i=0;i<qiuNum;i++) {
+					//实例化对象
+					var newQiu=new Qiu();
+					//把新生成的球放进数组
+					qiuArr.push(newQiu);
+				}
+				return qiuArr;
+			}
+			
+			//让球动起来
+			(function qiuHigh(){
+				var qius=createQiu();
+				setInterval(function(){
+					canv.width=canv.width;
+					//遍历让球移动，绘制
+					for (var i=0;i<qius.length;i++) {
+						qius[i].move();
+						qius[i].drawQiu();
+					}
+				},10);
+			})();
+		</script>
+	</body>
+</html>
+

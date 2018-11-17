@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>canvas</title>
+		<style type="text/css">
+			#canv{
+				border: 1px solid red;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="canv" width="500" height="500">
+			ie9 以下不支持,如果不支持，canvas相当于一个div
+			1、你的浏览器版本太低了，请先更新。
+			2、写flash功能
+		</canvas>
+		
+		<script type="text/javascript">
+			//获取画布
+			var canv=document.getElementById("canv");
+			//获取工具栏  必须要获取的
+			var ctx=canv.getContext("2d");
+			//拿起画笔，开始画
+			ctx.beginPath();
+			//设置画笔的粗细
+			ctx.lineWidth=1;
+			//设置画笔的颜色
+			ctx.strokeStyle="red";
+			//把笔落到起始位置，开始画
+			ctx.moveTo(100,150);
+			//需要画线的终点坐标
+			ctx.lineTo(400,150);
+			//沿着上一个点继续画
+			ctx.lineTo(130,350);
+			ctx.lineTo(250,50);
+			ctx.lineTo(370,350);
+//			ctx.lineTo(100,150);
+			
+			ctx.closePath();
+			//画(将布局实现)
+			ctx.stroke();
+			
+			//重新开始绘制
+			//当样式没有设置时，会继承上面的样式
+//			ctx.beginPath();
+//			ctx.lineWidth=2;
+//			
+//			ctx.moveTo(350,100);
+//			ctx.lineTo(500,200);
+//			
+//			ctx.stroke();
+			
+			//闭合路径，放下笔，绘制完毕
+//			ctx.closePath();
+			
+		</script>
+	</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>isPointInPath</title>
+		<style type="text/css">
+			#canv{
+				border: 1px solid red;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="canv" width="500" height="500"></canvas>
+		
+		<script type="text/javascript">
+			var canv=document.getElementById("canv");
+			var ctx=canv.getContext("2d");
+			
+			ctx.beginPath();
+			
+			ctx.fillStyle="red";
+			ctx.rect(100,100,100,100);
+			ctx.fill();
+//			ctx.stroke();
+			
+			
+//			ctx.beginPath();
+			ctx.rect(200,200,100,100);
+			ctx.fill();
+			
+			ctx.beginPath();
+			ctx.moveTo(0,0);
+			ctx.lineTo(0,100);
+			ctx.lineTo(100,100);
+			ctx.lineTo(100,0);
+//			ctx.closePath();
+			ctx.stroke();
+			
+			//isPointInPath:判断一个点是否在当前路径下
+			//当前路径:从上一个beginPath开始，就算是一个新路径
+			
+			//相当于自动closePath
+			if(ctx.isPointInPath(50,50)){
+				console.log("在当前路径下");
+			}else{
+				console.log("不在当前路径下");
+			}
+		</script>
+	</body>
+</html>

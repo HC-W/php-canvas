@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>画布之格子</title>
+		<style type="text/css">
+			#canv{
+				border: 1px solid red;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="canv" width="600" height="600"></canvas>
+		
+		<script src="../js/封装函数.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			//获取画布
+			var canv=q("#canv");
+			//获取工具栏
+			var ctx=canv.getContext("2d");
+			
+			//方法1:
+			/*//横格的间隔
+			var hengH=15;
+			//竖格的间隔
+			var shuW=15;
+			//计算能够画出来格数的最大值
+			var a=Number(canv.clientWidth/15);
+			var b=Number(canv.clientHeight/15);
+			//循环遍历绘制横线
+			for (var i=0;i<a;i++) {
+				xian(0,hengH,canv.width,hengH);
+				hengH+=15;
+			}
+			//循环遍历绘制竖线
+			for (var j=0;j<b;j++) {
+				xian(shuW,0,shuW,canv.height);
+				shuW+=15;
+			}
+			//绘制函数，多次调用
+			function xian(mX,mY,lX,lY){
+				//拿起画笔
+				ctx.beginPath();
+				//格子线的粗细
+				ctx.lineWidth=1;
+				//起始落笔处
+				ctx.moveTo(mX,mY);
+				//终点停笔处
+				ctx.lineTo(lX,lY);
+				//颜色
+				ctx.strokeStyle="#ccc";
+				//开始绘画
+				ctx.stroke();
+			}
+*/		
+
+			//方法2：
+			//表格每一个格子的宽高
+			var boxWH=20;
+			
+			ctx.beginPath();
+			ctx.strokeStyle="silver";
+			ctx.lineWidth=1;
+			for (var i=0;i<canv.width/boxWH+1;i++) {
+				//画横向
+				ctx.moveTo(0,i*boxWH);
+				ctx.lineTo(canv.width,i*boxWH);
+				//画纵向
+				ctx.moveTo(i*boxWH,0);
+				ctx.lineTo(i*boxWH,canv.width);
+			}
+			//绘制
+			ctx.stroke();
+		</script>
+	</body>
+</html>

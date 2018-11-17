@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>三条线</title>
+		<style type="text/css">
+			#canv{
+				border: 1px solid red;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="canv" width="600" height="600">
+			浏览器版本不支持
+			flash功能
+		</canvas>
+		
+		<script src="../js/封装函数.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			//获取画布
+			var canv=q("#canv");
+			//获取工具栏
+			var ctx=canv.getContext("2d");
+			//调用函数，进行绘画
+			//每一次调用都是一次重新开始绘画
+			
+			
+			//方法1：
+			/*huizhi(2,"red",100,100,500,100);
+			huizhi(4,"green",100,250,500,250);
+			huizhi(5,"blue",100,400,500,400);
+			
+			function huizhi(bw,col,mx,my,lx,ly){
+				//开始绘画
+				ctx.beginPath();
+				//线的粗细
+				ctx.lineWidth=bw;
+				//线的颜色
+				ctx.strokeStyle=col;
+				//起始点
+				ctx.moveTo(mx,my);
+				//终点
+				ctx.lineTo(lx,ly);
+				//开始绘画的实现
+				ctx.stroke();
+			}*/
+			
+			//方法2:
+			var colorArr=["red","green","blue"];
+			for (var i=0;i<3;i++) {
+				//开始绘画
+				ctx.beginPath();
+				//线的粗细
+				ctx.lineWidth=2*i+2;
+				//线的颜色
+				ctx.strokeStyle=colorArr[i];
+				//起始点
+				ctx.moveTo(100,(i+1)*100);
+				//终点
+				ctx.lineTo(400,(i+1)*100);
+				//开始绘画的实现
+				ctx.stroke();
+			}
+		</script>
+	</body>
+</html>

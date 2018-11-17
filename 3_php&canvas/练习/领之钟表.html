@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>领之绘制时钟</title>
+		<style type="text/css">
+			#canv{
+				border: 1px solid red;
+				background-color: black;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="canv" width="500" height="500"></canvas>
+
+		<script type="text/javascript">
+			var canv=document.getElementById("canv");
+			var ctx=canv.getContext("2d");
+			
+			var x=250;
+			var y=250;
+			var r=200;
+			var mp=Math.PI/180;
+			drawClock();
+			//画圆函数
+			function drawClock(){
+				//绘制小刻度
+				ctx.beginPath();
+				ctx.lineWidth=2;
+				ctx.strokeStyle="aquamarine";
+				for (var i=0;i<60;i++) {
+					ctx.moveTo(x,y);
+					ctx.arc(x,y,r,6*i*mp,6*(i+1)*mp,false);
+//					ctx.closePath();
+				}
+				ctx.stroke();
+				
+				//覆盖
+				ctx.beginPath();  
+				ctx.fillStyle=getComputedStyle(canv)["background-color"];
+				ctx.arc(x,y,r-8,0,360*mp,false);
+				ctx.fill();
+				
+				//绘制大刻度
+				ctx.beginPath();
+				ctx.lineWidth=3;
+				ctx.strokeStyle="pink";
+				for (var k=0;k<12;k++) {
+					ctx.moveTo(x,y);
+					ctx.arc(x,y,r,30*k*mp,30*(k+1)*mp,false);
+//					ctx.closePath();
+				}
+				ctx.stroke();
+				
+				//覆盖
+				ctx.beginPath();
+				ctx.arc(x,y,r-12,0,360*mp,false);
+				ctx.fill();
+				
+				//获取时间
+				var myDate=new Date();
+				var myHour=myDate.getHours();
+				var myMin=myDate.getMinutes();
+				var mySec=myDate.getSeconds();
+				
+				//计算各针的旋转角度
+				var miaoDeg=mySec*360/60-90;
+				//分针
+				var fenDeg=myMin*360/60+mySec/60*6-90;
+				//时针
+				var shiDeg=myHour*360/12+myMin*30/60-90;
+				//画针
+				//秒针
+				drawZhen(2,"skyblue",r-20,miaoDeg);
+				//分针
+				drawZhen(4,"red",r-40,fenDeg);
+				//时针
+				drawZhen(5,"#ccc",r-60,shiDeg);
+				
+				ctx.beginPath();
+				ctx.fillStyle="burlywood";
+				ctx.arc(x,y,10,0,360*mp,false);
+				ctx.fill();
+				
+				setTimeout(function(){
+					requestAnimationFrame(drawClock);
+				},1000);
+			}
+			
+			function drawZhen(lw,lc,lr,ldeg){
+				ctx.beginPath();
+				ctx.lineWidth=lw;
+				ctx.strokeStyle=lc;
+				ctx.moveTo(x,y);
+				ctx.arc(x,y,lr,ldeg*mp,ldeg*mp,false);
+				ctx.stroke();
+			}
+		</script>
+	</body>
+</html>

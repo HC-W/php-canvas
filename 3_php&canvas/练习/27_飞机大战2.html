@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>飞机大战</title>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="canv" ></canvas>
+		<script src="../js/封装函数.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			var canv=document.getElementById("canv");
+			//宽高等于屏幕的宽高
+//			canv.width=document.documentElement.clientWidth;
+			//或者
+			canv.width=window.innerWidth;
+			canv.height=window.innerHeight;
+			//获取工具栏（功能接口）
+			var ctx=canv.getContext("2d");
+			
+			loadImage({
+				bg:"../img/tanke/background_2.png",
+				bullet:"../img/tanke/bullet1.png",
+				player1:"../img/tanke/hero_fly_1.png",
+				player2:"../img/tanke/hero_fly_2.png",
+			},{
+				progress:function(s){
+					console.log("已经加载："+s+"%");
+				},
+				complete:main
+			});
+			
+			//主函数
+			//把加载好的图片传回来
+			function main(imgs){
+				console.log(imgs);
+				//获取背景图片
+				var bg=imgs.bg;
+				//纵向偏移量
+				var offsetY=0;
+				//背景移动素的
+				var speedY=3;
+				//控制切换图片的频率
+				var changeFrequency=0;
+				
+				//主角类
+				function Plane(){
+					//出现位置
+					this.x=canv.width/2-imgs.player1.width/2;
+					this.y=canv.height-imgs.player1.height;
+					//对象的宽高
+					this.w=imgs.player1.width;
+					this.h=imgs.player1.height;
+					//对象
+					this.img=imgs.player1;
+				}
+				//实例化一个对象
+				var plane=new Plane();
+				//绘制
+				!function drawBG(){
+					//offsetY递增
+					offsetY+=speedY;
+					changeFrequency++;
+					//判断边界
+					//当偏移量移出屏幕
+					if(offsetY>window.innerWidth){
+						//设置偏移量为0
+						offsetY=0;
+					}
+					//绘制
+					//请画布
+					canv.width=canv.width;
+					ctx.drawImage(bg,0,offsetY,canv.width,canv.height);
+					ctx.drawImage(bg,0,offsetY-canv.height,canv.width,canv.height);
+					//控制飞机碰火频率
+					if(changeFrequency%4==0){
+						plane.img=imgs.player1;
+					}else{
+						plane.img=imgs.player2;
+					}
+					//绘制
+					ctx.drawImage(plane.img,plane.x,plane.y,plane.w,plane.h);
+					requestAnimationFrame(drawBG);
+				}();
+			}
+		</script>
+	</body>
+</html>

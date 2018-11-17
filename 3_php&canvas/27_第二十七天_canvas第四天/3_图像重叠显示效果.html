@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>图像重叠显示效果</title>
+		<style type="text/css">
+			#canv{
+				border: 1px solid red;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="canv" width="500" height="500"></canvas>
+		<script type="text/javascript">
+			var canv=document.getElementById("canv");
+			var ctx=canv.getContext("2d");
+			//目标图像
+			ctx.beginPath();
+			ctx.fillStyle="red";
+			ctx.rect(0,0,100,100);
+			ctx.fill();
+			
+			//叠加效果
+			ctx.globalCompositeOperation="destination-over";
+			//源图像
+			ctx.beginPath();
+			ctx.fillStyle="green";
+			ctx.arc(100,100,50,0,Math.PI*2);
+			ctx.fill();
+		</script>
+	</body>
+</html>

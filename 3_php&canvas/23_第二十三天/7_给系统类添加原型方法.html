@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>给系统类添加原型方法</title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			String.prototype.QDspace = function(){
+				//正则
+				var re=/^s+|\s+$/img;
+				return "("+this.replace(re,"")+")";
+			}
+			var str=new String("  hello  world  !");
+			str.QDspace();
+			console.log(str.QDspace());
+			
+			/*
+			 作业：
+			 分数类
+			 属性：分子、分母
+			 行为：约分、输出分数、分数加减乘除
+			 
+			 作业2：
+			 给系统类添加方法
+			 给数组类添加冒泡排序原型方法
+			 给字符串添加  判断字符串是否相等，不区分大小写
+			 
+			 * */
+		</script>
+	</body>
+</html>

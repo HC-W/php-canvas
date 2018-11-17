@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>图片剪裁</title>
+		<style type="text/css">
+			#canv{
+				border: 1px solid red;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="canv" width="500" height="500"></canvas>
+		
+		<script type="text/javascript">
+			var canv=document.getElementById("canv");
+			var ctx=canv.getContext("2d");
+			ctx.beginPath();
+			
+			//实例化一个图片对象
+			var newImage=new Image();
+			newImage.src="../img/2.png";
+			newImage.onload=function(){
+				//计算比例
+				//一个小人的宽度/整个图片的高度
+				var bili=newImage.width/4/newImage.height;
+				//绘制图片
+				//对象，裁剪的起点X，裁剪的起点Y，裁剪的宽度，裁剪的高度，裁剪完放置的位置X，放置的位置Y，自定义的图片宽度，自定义图片高度(根据宽度和比例进行计算)
+				ctx.drawImage(newImage,newImage.width/4,0,newImage.width/4,newImage.height,100,100,200,200/bili);
+			}
+		</script>
+	</body>
+</html>

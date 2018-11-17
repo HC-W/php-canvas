@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>刚之碰壁反弹</title>
+		<style type="text/css">
+			#canv{
+				border: 1px solid red;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="canv" width="800" height="500"></canvas>
+		<script src="../js/封装函数.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			var canv=document.getElementById("canv");
+			var ctx=canv.getContext("2d");
+			
+			var x=y=1,w=h=50;
+			ctx.beginPath();
+			ctx.fillStyle="red";
+			ctx.rect(x,y,w,h);
+			ctx.fill();
+			
+			var speedX=10;
+			var speedY=10;
+			
+			(function move(){
+				//移动
+				x+=speedX;
+				y+=speedY;
+				
+				if(x<=0){
+					speedX=10;
+				}else if(x>=canv.width-w){
+					speedX=-10;
+				}
+				if(y<=0){
+					speedY=10;
+				}else if(y>=canv.height-h){
+					speedY=-10;
+				}
+				
+				var r=rand(0,254);
+				var g=rand(0,254);
+				var b=rand(0,254);
+				var a=Math.random().toFixed(2);
+				//填充颜色的赋值
+				var randColor="rgba("+r+","+g+","+b+","+a+")";
+				//绘制
+				ctx.clearRect(0,0,canv.width,canv.height);
+				ctx.beginPath();
+				ctx.fillStyle=randColor;
+				ctx.rect(x,y,w,h);
+				ctx.fill();
+				
+				setTimeout(function(){
+					requestAnimationFrame(move);
+				},50);
+			})();
+		</script>
+	</body>
+</html>

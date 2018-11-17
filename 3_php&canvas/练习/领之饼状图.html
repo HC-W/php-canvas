@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>饼状图</title>
+		<style type="text/css">
+			#canv{
+				border: 1px solid red;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="canv" width="500" height="500"></canvas>
+		
+		<script type="text/javascript">
+			//获取画布
+			var canv=document.getElementById("canv");
+			//获取工具栏
+			var ctx=canv.getContext("2d");
+			
+			//圆心位置
+			var sX=250;
+			var sY=250;
+			//半径
+			var sR=100;
+			
+			var bfb=["20.86%","29.14%","37.5%","12.5%"];
+			var colorArr=["red","blue","green","#ccc"];
+			//根据占比计算角度
+			var degArr=[];
+			//起始度数和终点度数
+			var startDeg=[-90];
+			var endDeg=[];
+			
+			var zongDeg=0;
+			for (var i=0;i<bfb.length;i++) {
+				//获取每一块的度数
+				degArr[i]=parseFloat(bfb[i])/100*360;
+				//计算每一块的总度数
+				zongDeg+=degArr[i];
+				//终点度数=计算的总度数
+				//减90，是因为方向不对，默认是逆时针，减90让其恢复顺时针的度数
+				endDeg[i]=-90+zongDeg;
+				//每次的起点位置是上一次终点位置
+				startDeg[i+1]=endDeg[i];
+			}
+			//画扇形
+			for(var k=0;k<4;k++){
+				drawSector(colorArr[k],sR,startDeg[k],endDeg[k],bfb[k]);
+			}
+			//绘制扇形函数
+			function drawSector(c,r,startD,endD,bfb){
+				ctx.beginPath();
+				ctx.fillStyle=c;
+				ctx.moveTo(sX,sY);
+				ctx.arc(sX,sY,r,startD*Math.PI/180,endD*Math.PI/180,false);
+				ctx.closePath();
+				
+				//绘制文字
+				var deg=endD-Math.abs(endD-startD)/2;
+				var textX=(sR+20)*(Math.cos(deg*Math.PI/180))+sX;
+				var textY=(sR+20)*(Math.sin(deg*Math.PI/180))+sY;
+				
+				//判断文字在左边还是右边，上边还是下边
+				if(textX<sX){
+					ctx.textAlign="end";
+				}
+				if(textY>sY){
+					ctx.textBaseline="top";
+				}
+				
+				ctx.fillText(bfb,textX,textY);
+				ctx.fill();
+			}
+			
+		</script>
+	</body>
+</html>

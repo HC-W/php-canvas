@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>画图板</title>
+		<style type="text/css">
+			#canv{
+				border: 1px solid red;
+			}
+			.context{
+				width: 502px;
+				border: 1px solid black;
+				padding: 10px;
+				box-sizing: border-box;
+				font-size: 15px;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="canv" width="500" height="500"></canvas>
+		<div class="context">
+			<button class="clear">清除画布</button>
+			<label for="lw">线条宽度</label>
+			<select name="" id="lw">
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+				<option value="4">4</option>
+				<option value="5">5</option>
+				<option value="6">6</option>
+				<option value="7">7</option>
+				<option value="8">8</option>
+				<option value="9">9</option>
+				<option value="10">10</option>
+			</select>
+			<label for="lc">线条颜色</label>
+			<input type="color" name="" id="lc" value="color" />
+			<input type="button" id="save" value="保存" />
+		</div>
+		
+		<script src="../js/封装函数.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			var canv=q("#canv");
+			var clearBtn=q(".clear");
+			var lineWidth=q("#lw");
+			var lineColor=q("#lc");
+			var ctx=canv.getContext("2d");
+			var isMove=false;
+			//初始化线宽和颜色
+			var myColor="black";
+			var myLine=1;
+			//当颜色和线宽的值在聚焦失焦发生改变的时候，获取值
+			lineColor.onchange=function(){
+				myColor=this.value;
+			}
+			lineWidth.onchange=function(){
+				myLine=this.value;
+			}
+			//开始画
+			canv.onmousedown=function(ev){
+				//当鼠标按上去，获取鼠标位置
+				var e=ev || window.event;
+				var mouseX=e.clientX-canv.offsetLeft;
+				var mouseY=e.clientY-canv.offsetTop;
+				//开始绘画
+				ctx.beginPath();
+				ctx.strokeStyle=myColor;
+				ctx.lineWidth=myLine;
+				//绘画的起始点
+				ctx.moveTo(mouseX,mouseY);
+				canv.onmousemove=function(ev){
+					isMove=true;
+					var e=ev || window.event;
+					//实时获取鼠标移动位置
+					var nowX=e.clientX-canv.offsetLeft;
+					var nowY=e.clientY-canv.offsetTop;
+					//绘制
+					ctx.lineTo(nowX,nowY);
+					ctx.stroke();
+				}
+			}
+			canv.onmouseup=function(ev){
+				if(!isMove){
+					var e=ev || window.event;
+					var mouseX=e.clientX-canv.offsetLeft;
+					var mouseY=e.clientY-canv.offsetTop;
+					//画一个小点
+					ctx.beginPath();
+					ctx.fillStyle=myColor;
+					ctx.arc(mouseX,mouseY,myLine/2,0,Math.PI*2);
+					ctx.fill();
+				}
+				isMove=false;
+				canv.onmousemove=false;
+			}
+			//清除画布按钮点击
+			clearBtn.onclick=function(){
+				canv.width=canv.width;
+			}
+		</script>
+	</body>
+</html>

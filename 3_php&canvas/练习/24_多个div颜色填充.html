@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>多个div颜色填充</title>
+		<style type="text/css">
+			#canv{
+				border: 1px solid red;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="canv" width="600" height="600"></canvas>
+		
+		<script src="../js/封装函数.js" type="text/javascript"></script>
+		<script type="text/javascript">
+			//获取画布
+			var canv=q("#canv");
+			//获取工具栏
+			var ctx=canv.getContext("2d");
+			//绘制的个数
+			var str=6;
+			//初始X(第一个的左边距)
+			var x=80;
+			//初始Y(第一个的上边距)
+			var y=80;
+			//个数遍历，进行画布的绘制
+			for (var i=0;i<str;i++) {
+				//开始绘画
+				ctx.beginPath();
+				huizhi(x,y);
+				//每绘制一个，x,y的值进行一次变化
+				x+=50;
+				y+=50;
+			}
+			//绘制的函数，多次利用
+			function huizhi(x,y){
+				//颜色的随机数
+				var r=rand(0,254);
+				var g=rand(0,254);
+				var b=rand(0,254);
+				//填充颜色的赋值
+				ctx.fillStyle="rgb("+r+","+g+","+b+")";
+				//填充的大小
+				ctx.fillRect(x,y,200,100);
+			}
+		</script>
+	</body>
+</html>

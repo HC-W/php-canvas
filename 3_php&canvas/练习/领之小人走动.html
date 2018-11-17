@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>领之小人走动</title>
+		<style type="text/css">
+			#canv{
+				border: 1px solid red;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="canv" width="500" height="500"></canvas>
+		
+		<script type="text/javascript">
+			var canv=document.getElementById("canv");
+			var ctx=canv.getContext("2d");
+			//实例化一个对象
+			var newImage=new Image();
+			newImage.src="../img/3.png";
+			//图片加载
+			newImage.onload=function(){
+				//比例计算
+				var w=newImage.width/8;
+				var h=newImage.height/4;
+				var bili=w/h;
+				//横向显示的张数
+				var indexX=0;
+				//纵向显示的张数(面向哪边)
+				var faceTo=0;
+				//定义一个运行时间为空
+				var newTimer=null;
+				move();
+				//键盘按下事件
+				document.onkeydown=function(ev){
+					
+					//清除定时器
+					//让move执行一次
+					//先绘制一张静止不动的
+					//调用函数
+//					move();
+					//事件对象
+					var e=ev || window.event;
+					//判断键盘按下对应的数字
+					switch(e.keyCode){
+						case 40:
+						//根据indexY的变化调用函数进行上下左右走动的切换
+							faceTo=0;
+							break;
+						case 37:
+							faceTo=1;
+							break;
+						case 39:
+							faceTo=2;
+							break;
+						case 38:
+							faceTo=3;
+							break;
+					}
+				}
+				//键盘按钮抬起事件
+				/*document.onkeyup=function(ev){
+					var e=ev || window.event;
+					//当上下左右键抬起时
+					if(e.keyCode==37 || e.keyCode==38 || e.keyCode==39 || e.keyCode==40){
+						//显示第0个位置的切图
+						indexX=0;
+						//停止移动
+						cancelAnimationFrame(newTimer);
+					}
+				}*/
+				function move(){
+					//清除画布
+//					canv.width=canv.width;
+					ctx.clearRect(0,0,canv.width,canv.height);
+					//裁剪图片
+					ctx.drawImage(newImage,indexX*w,faceTo*h,w,h,100,100,250,250/bili);
+					//横向显示张数++
+					indexX++;
+					if(indexX>7){
+						indexX=0;
+					}
+					//递归
+					setTimeout(function(){
+						newTimer=requestAnimationFrame(move);
+					},200);
+				}
+			}
+		</script>
+	</body>
+</html>

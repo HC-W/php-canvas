@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>继承</title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			
+			function Person(name,age){
+				this.eyes=2;
+				this.mouth=1;
+				this.name=name;
+				this.age=age;
+			}
+			Person.prototype.eat=function(){
+				console.log("eat you");
+			}
+			
+			function Women(name,age){
+				//继承属性
+				Person.call(this);
+				this.hair="lang";
+				this.name=name;
+				this.age=age;
+			}
+			/*//会进行覆盖，放在这里可以
+			Women.prototype=Person.prototype;*/
+			Women.prototype.huazhuang=function(){
+				console.log("美美哒");
+			}
+			
+//			Women.prototype=Person.prototype;
+			
+			//继承方法
+			for (var i in Person.prototype){
+				Women.prototype[i]=Person.prototype[i];
+			}
+			
+			//继承后的重写
+			//会进行覆盖
+			Women.prototype.eat=function(){
+				console.log("eat you more and more");
+			}
+			
+			var newPerson=new Person("wang",18);
+			var cml=new Women("nn",18);
+			console.log(cml.name);
+			cml.eat();
+			cml.huazhuang();
+		</script>
+	</body>
+</html>

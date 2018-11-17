@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>面向对象继承拖拽</title>
+		<style type="text/css">
+			div{
+				width: 100px;
+				height: 100px;
+				position: absolute;
+				border-radius: 50%;
+			}
+			.div1{
+				background-color: skyblue;
+			}
+			.div2{
+				background-color: greenyellow;
+				left: 150px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="div1"></div>
+		<div class="div2"></div>
+		
+		<script src="../js/23_drag1.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/23_drag2.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/封装函数.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			var div1=q(".div1");
+			var div2=q(".div2");
+			
+			new Drag(div1);
+			new Drag2(div2);
+		</script>
+	</body>
+</html>

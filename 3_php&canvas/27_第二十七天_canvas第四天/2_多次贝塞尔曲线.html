@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>多次贝塞尔曲线</title>
+		<style type="text/css">
+			#canv{
+				border: 1px solid red;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="canv" width="500" height="500"></canvas>
+		<script src="../js/beisaier/bezierMaker.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			var canv=document.getElementById("canv");
+			var ctx=canv.getContext("2d");
+			
+			var arr=[{x:216,y:256},{x:296,y:77},{x:610,y:252},{x:239,y:136},{x:316,y:256}];
+			var b=new BezierMaker(canv,arr,"green");
+			b.drawBezier();
+		</script>
+	</body>
+</html>

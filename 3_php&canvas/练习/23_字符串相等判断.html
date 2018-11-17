@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="../js/jq/jquery-3.2.1.min.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<lable>请输入第一个字符串</lable>
+		<input type="text" class="txt1"/>
+		<lable>请输入第二个字符串</lable>
+		<input type="text" class="txt2"/>
+		<input type="button" name="btn" id="btn" value="判断" />
+		
+		
+		<script src="../js/jq/jquery-3.2.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			$(function(){
+				var str=new String;
+				String.prototype.panDuan=function(){
+					$("#btn").on("click",function(){
+						//全部转为小写
+						var t1=$(".txt1").val().toLowerCase();
+						var t2=$(".txt2").val().toLowerCase();
+						if(t1==t2){
+							alert("两字符串相等");
+							//清空
+							$(".txt1").val("")
+							$(".txt2").val("")
+						}else{
+							alert("两字符串不相等");
+//							清空
+							$(".txt1").val("")
+							$(".txt2").val("")
+						}
+					})
+				}
+				str.panDuan();
+			})
+		</script>
+	</body>
+</html>

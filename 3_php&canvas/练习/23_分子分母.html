@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>分子分母</title>
+	</head>
+	<body>
+		<!--作业：
+			 分数类
+			 属性：分子、分母
+			 行为：约分、输出分数、分数加减乘除
+			 
+			 作业2：
+			 给系统类添加方法
+			 给数组类添加冒泡排序原型方法
+			 给字符串添加  判断字符串是否相等，不区分大小写-->
+			 
+		<script type="text/javascript">
+			var beishu;
+		 	function Score(fenzi,fenmu){
+		 		this.fenzi=fenzi;
+		 		this.fenmu=fenmu;
+		 		//输出分数
+		 		this.shuChu=function(){
+		 			shu(this.fenzi,this.fenmu);
+		 		}
+		 		//约分后输出
+		 		this.yueFen=function(){
+					yf(this.fenzi,this.fenmu);
+		 		}
+		 		
+		 		//分数计算
+		 		//加
+		 		this.Jia=function(){
+		 			console.log("相加：");
+		 			bs(one.fenzi,two.fenzi,one.fenmu,two.fenmu);
+		 			//求出最小公倍数和两个分母相差的倍数，以便计算变化后的分子
+			 		one.bei1=beishu/one.fenmu;
+			 		two.bei2=beishu/two.fenmu;
+			 		//分子相加的和
+			 		this.ziHe=one.fenzi*one.bei1+two.fenzi*two.bei2;
+			 		//判断相加后的分子分母是否相等，相等时输出1
+			 		if(this.ziHe==beishu){
+			 			console.log("相加为："+1);
+			 		}else{
+			 			console.log("相加为："+this.ziHe+"/"+beishu);
+			 			//最终值的约分
+			 			yf(this.ziHe,beishu);
+			 		}
+		 		}
+		 		//减
+		 		this.Jian=function(){
+		 			console.log("相减：");
+		 			bs(one.fenzi,two.fenzi,one.fenmu,two.fenmu);
+		 			//求出最小公倍数和两个分母相差的倍数，以便计算变化后的分子
+			 		one.bei1=beishu/one.fenmu;
+			 		two.bei2=beishu/two.fenmu;
+			 		//分子相加的和
+			 		this.zicha=one.fenzi*one.bei1-two.fenzi*two.bei2;
+			 		//判断相加后的分子分母是否相等，相等时输出1
+			 		if(this.ziHe==beishu){
+			 			console.log("相减为："+1);
+			 		}else{
+			 			console.log("相减为："+this.zicha+"/"+beishu);
+			 			//最终值的约分
+			 			yf(this.zicha,beishu);
+			 		}
+		 		}
+		 		//乘
+		 		this.Cheng=function(){
+		 			this.fenziCheng=one.fenzi*two.fenzi;
+		 			this.fenmuCheng=one.fenmu*two.fenmu;
+		 			console.log("相乘：");
+					shu(this.fenziCheng,this.fenmuCheng);
+					yf(this.fenziCheng,this.fenmuCheng);
+		 		}
+		 		//除
+		 		this.Chu=function(){
+		 			this.fenziChu=one.fenzi*two.fenmu;
+		 			this.fenmuChu=one.fenmu*two.fenzi;
+		 			console.log("相除：")
+					shu(this.fenziChu,this.fenmuChu);
+					yf(this.fenziChu,this.fenmuChu);
+		 		}
+		 	}
+		 	
+		 	var one=new Score(4,8);
+		 	var two=new Score(3,4);
+		 	console.log("第一个：");
+		 	one.shuChu();
+		 	one.yueFen();
+		 	console.log("第二个：");
+		 	two.shuChu();
+		 	two.yueFen();
+		 	console.log("运算：");
+		 	one.Jia();
+		 	one.Jian();
+		 	one.Cheng();
+		 	one.Chu();
+		 	
+		 	//函数定义
+		 	//输出分数
+		 	function shu(zi,mu){
+		 		console.log("输出分数为："+zi+"/"+mu);
+		 	}
+		 	//约分
+		 	function yf(zi,mu){
+		 		//求出分子分母中的最小值
+	 			var minNum=Math.min(Math.abs(zi),Math.abs(mu));
+	 			//把公约数设为1
+	 			var yueshu=1;
+	 			//for循环查找最大公约数
+	 			for (var i=1;i<=minNum;i++) {
+	 				if(Math.abs(zi)%i==0 && Math.abs(mu)%i==0){
+	 					//公约数的赋值变化
+	 					yueshu=i;
+	 				}
+	 			}
+	 			//判断最大公约数和分母的大小,当相等时约完后等于1，可以省略
+	 			//输出约分后的大小
+	 			if(yueshu==mu){
+	 				console.log("约分后为："+zi/yueshu);
+	 			}else{
+	 				console.log("约分后为："+(zi/yueshu)+"/"+(mu/yueshu));
+	 			}
+		 	}
+		 	//求最小公倍数
+		 	function bs(zi1,zi2,mu1,mu2){
+		 		//获取两个分数分母的乘积
+		 		var chengJi=mu1*mu2;
+		 		//获取两个分母中的最大值
+		 		var maxNum=Math.max(mu1,mu2);
+		 		//设出最小公倍数的初始值
+		 		beishu=chengJi;
+		 		//遍历查找
+		 		for (var i=chengJi;i>=maxNum;i--) {
+		 			if(i%mu1==0 && i%mu2==0){
+		 				beishu=i;
+		 			}
+		 		}
+		 		var mujia1=mujia2=beishu;
+		 	}
+		</script>
+	</body>
+</html>

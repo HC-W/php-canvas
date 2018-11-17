@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>canvas</title>
+		<style type="text/css">
+			#canv{
+				border: 1px solid red;
+			}
+		</style>
+	</head>
+	<body>
+		<!--
+			canvas:画布
+			H5版本新标签
+			通过js来绘制图形、图像，渲染图片、渲染文字等一些特殊效果或者动画。
+			
+			注意：设置canvas画布大小时，不可以使用css样式设置，因为会把画布拉伸
+			应该使用width、height属性
+			会把画布像素变大
+		-->
+		<canvas id="canv" width="500" height="500"></canvas>
+		
+		<script type="text/javascript">
+			//获取画布
+			var canv=document.getElementById("canv");
+			
+//			canv.width="600";
+
+			//获取工具栏
+			var ctx=canv.getContext("2d");
+		</script>
+	</body>
+</html>

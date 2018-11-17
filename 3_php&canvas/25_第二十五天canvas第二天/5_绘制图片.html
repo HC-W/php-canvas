@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>绘制图片</title>
+		<style type="text/css">
+			#canv{
+				border: 1px solid red;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="canv" width="500" height="500"></canvas>
+		
+		<script type="text/javascript">
+			var canv=document.getElementById("canv");
+			//获取功能接口
+			var ctx=canv.getContext("2d");
+			ctx.beginPath();
+			
+			//绘制图片：drawImage
+			//参数：
+			//1、图片对象
+			//2、图片左上角X坐标
+			//3、图片左上角Y坐标
+			//4、显示图片的宽度
+			//5、显示图片的高度
+			
+			/*注意：
+			 * 1、需要在图片加载完后，才能绘制图片
+			 * 2、绘制的图片不会等比缩放
+			 * */
+			
+			var newImage=new Image();
+			newImage.src="../img/1.jpg";
+			
+			//等图片加载完毕
+			newImage.onload=function(){
+				//计算比例
+				var bili=newImage.width/newImage.height;
+//				console.log(newImage.width,newImage.height);
+				//计算完比例之后进行绘制
+				ctx.drawImage(newImage,100,100,300,300/bili);
+			}
+			
+			
+			
+		</script>
+	</body>
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>第一个面向对象</title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			//声明一个对象
+			var person1=new Object();
+			person1.name="gg";
+			person1.age=18;
+			person1.sex="男";
+			//行为
+			person1.say=function(){
+				console.log("my name is " +this.name);
+			}
+			
+			person1.say();
+		</script>
+	</body>
+</html>

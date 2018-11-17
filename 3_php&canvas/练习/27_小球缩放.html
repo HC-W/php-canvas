@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>小球缩放</title>
+		<style type="text/css">
+			#canv{
+				border: 1px solid red;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="canv" width="800" height="500"></canvas>
+		<script src="../js/封装函数.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			var canv=document.getElementById("canv");
+			var ctx=canv.getContext("2d");
+			
+			//实例化对象
+			var yuanArr=[];
+			var count=20;
+			//遍历添加小球
+			for (var i=0;i<count;i++) {
+				//把小球放进数组
+				yuanArr[i]=new Round();
+			}
+			function Round(){
+				//半径
+				var r=rand(10,40);
+				//属性
+				//宽
+				this.x=rand(r,canv.width-r);
+				//高
+				this.y=rand(r,canv.height-r);
+				//半径
+				this.r=r;
+				this.color=thisRandColor(0,200);
+				//总的缩放比较基准
+				this.scale=rand(2,3);
+				//缩放的变化值
+				this.sX=rand(1,2);
+				this.bian=true;
+			}
+			
+			//行为
+			Round.prototype.move=function(){
+				//画布的保存
+				ctx.save();
+				//条件判定和边界判定
+				if(this.sX<=1){
+					this.bian=true;
+					//else if 前面是缩放判定，后面是边界判定
+				}else if(this.sX>=this.scale || this.sX*this.r+this.x>=canv.width || -(this.sX*this.r)<-this.x || this.sX*this.r+this.y>=canv.height || -(this.sX*this.r)<-this.y){
+					this.bian=false;
+				}
+				//移动
+				if(this.bian){
+					this.sX+=0.2;
+				}else if(this.bian==false){
+					this.sX-=0.2;
+				}
+				//缩放基准的移动
+				ctx.translate(this.x,this.y);
+				ctx.beginPath();
+				//缩放
+				ctx.scale(this.sX,this.sX);
+				ctx.fillStyle=this.color;
+				ctx.arc(0,0,this.r,0,Math.PI*2);
+				ctx.fill();
+				//恢复保存的画布
+				ctx.restore();
+			}
+			setInterval(function(){
+				//清画布
+				//位置放置顺序会影响小球的个数：放在move中只有一个小球，每运行一次其他的都会被清掉
+				canv.width=canv.width;
+				for (var k=0;k<count;k++) {
+					//每一个小球都移动
+					yuanArr[k].move();
+				}
+			},100);
+		</script>
+	</body>
+</html>

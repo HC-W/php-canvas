@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>飞机大战</title>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			html,body{
+				height: 100%;
+			}
+			body{
+				overflow: hidden;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="canv" ></canvas>
+		<script src="../js/封装函数.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			var canv=document.getElementById("canv");
+			//宽高等于屏幕的宽高
+//			canv.width=document.documentElement.clientWidth;
+			//或者
+			canv.width=window.innerWidth;
+			canv.height=window.innerHeight;
+			//获取工具栏（功能接口）
+			var ctx=canv.getContext("2d");
+			
+			loadImage({
+				bg:"../img/tanke/background_2.png",
+				bullet:"../img/tanke/bullet1.png",
+				player1:"../img/tanke/hero_fly_1.png",
+				player2:"../img/tanke/hero_fly_2.png",
+				enemy1Fly:"../img/tanke/enemy1_fly_1.png",
+				enemy2Fly:"../img/tanke/enemy3_fly_1.png",
+				enemy3Fly:"../img/tanke/enemy2_fly_1.png",
+			},{
+				progress:function(s){
+					console.log("已经加载："+s+"%");
+				},
+				complete:main
+			});
+			
+			//主函数
+			//把加载好的图片传回来
+			function main(imgs){
+				console.log(imgs);
+				//获取背景图片
+				var bg=imgs.bg;
+				//纵向偏移量
+				var offsetY=0;
+				//背景移动素的
+				var speedY=3;
+				//控制切换图片的频率
+				var changeFrequency=0;
+				//声场子弹数组
+				var bulletArr=[];
+				
+				//生成敌人数组
+				var enemyArr=[];
+				
+				//主角类
+				function Plane(){
+					//出现位置
+					this.x=canv.width/2-imgs.player1.width/2;
+					this.y=canv.height-imgs.player1.height;
+					//对象的宽高
+					this.w=imgs.player1.width;
+					this.h=imgs.player1.height;
+					//对象
+					this.img=imgs.player1;
+					//判断是否可以移动
+					this.isMove=false;
+				}
+				//实例化一个对象
+				var plane=new Plane();
+				//子弹类
+				function Bullet(){
+					this.x=plane.x+plane.w/2-imgs.bullet.width/2;
+					this.y=plane.y-imgs.bullet.height-10;
+					this.w=imgs.bullet.width;
+					this.h=imgs.bullet.height;
+					this.speed=5;
+					this.isClear=false;
+				}
+				//子弹方法-移动
+				Bullet.prototype.move=function(){
+					this.y-=this.speed;
+					if(this.y+this.h<0){
+						//子弹超出屏幕，清除
+						this.isClear=true;
+					}
+				}
+				//绘制子弹
+				Bullet.prototype.drawBullet=function(){
+					ctx.beginPath();
+					ctx.drawImage(imgs.bullet,this.x,this.y,this.w,this.h);
+				}
+				
+				//敌机类
+				function Enemy(){
+					this.img=imgs.enemy1Fly;
+					this.w=this.img.width;
+					this.h=this.img.height;
+					this.x=rand(0,canv.width-this.w);
+					this.y=-this.h;
+					this.speed=8;
+					this.blood=1;
+					this.score=1;
+					this.isClear=false;
+					this.type=1;
+				}
+				//天假原型方法，移动
+				Enemy.prototype.move=function(){
+					//y值进行变化，即移动
+					this.y+=this.speed;
+					if(this.y>window.innerHeight){
+						this.isClear=true;
+					}
+				}
+				//绘制敌机
+				Enemy.prototype.drawEnemy=function(){
+					ctx.beginPath();
+					ctx.drawImage(this.img,this.x,this.y,this.w,this.h);
+				}
+				//改变生成敌机的类型
+				Enemy.prototype.changeType=function(typeNum){
+					this.type=typeNum;
+					switch (this.type){
+						case 1:
+							break;
+						case 2:
+							this.img=imgs.enemy2Fly;
+							this.w=this.img.width;
+							this.h=this.img.height;
+							this.x=rand(0,canv.width-this.w);
+							this.y=-this.h;
+							this.speed=4;
+							this.blood=4;
+							this.score=2;
+							break;
+						case 3:
+							this.img=imgs.enemy3Fly;
+							this.w=this.img.width;
+							this.h=this.img.height;
+							this.x=rand(0,canv.width-this.w);
+							this.y=-this.h;
+							this.speed=1;
+							this.blood=8;
+							this.score=3;
+							break;
+					}
+				}
+				//绘制
+				!function drawBG(){
+					//offsetY递增
+					offsetY+=speedY;
+					changeFrequency++;
+					//判断边界
+					//当偏移量移出屏幕
+					if(offsetY>window.innerHeight){
+						//设置偏移量为0
+						offsetY=0;
+					}
+					//绘制
+					//请画布
+					canv.width=canv.width;
+					ctx.drawImage(bg,0,offsetY,canv.width,canv.height);
+					ctx.drawImage(bg,0,offsetY-canv.height,canv.width,canv.height);
+					
+					//生成敌机
+					if(changeFrequency%50==0){
+						var newEnemy=new Enemy();
+						if(changeFrequency%100==0){
+							newEnemy.changeType(2);
+						}
+						if(changeFrequency%200==0){
+							newEnemy.changeType(3);
+						}
+						enemyArr.push(newEnemy);
+					}
+					
+					//遍历敌人
+					for (var i=0;i<enemyArr.length;i++){
+						enemyArr[i].move();
+						enemyArr[i].drawEnemy();
+						//判断飞出屏幕，删除
+						if(enemyArr[i].isClear){
+							enemyArr.splice(i,1);
+							i--;
+						}
+					}
+					//控制子弹发射频率
+					if(changeFrequency%10==0){
+						var newBullet=new Bullet();
+						bulletArr.push(newBullet);
+					}
+					for(var i=0;i<bulletArr.length;i++){
+						bulletArr[i].move();
+						bulletArr[i].drawBullet();
+						if(bulletArr[i].isClear){
+							bulletArr.splice(i,1);
+							i--;
+						}
+						
+					}
+//					console.log(bulletArr.length);
+					
+					//判断子弹打中敌机
+					for (var i=0;i<bulletArr.length;i++) {
+						for (var j=0;j<enemyArr.length;j++) {
+							if(pz(bulletArr[i],enemyArr[j])){
+								bulletArr.splice(i,1);
+								enemyArr[j].blood--;
+								if(enemyArr[j].blood==0){
+									enemyArr.splice(j,1);
+								}
+								break;
+							}
+						}
+					}
+					
+					//控制飞机碰火频率
+					if(changeFrequency%4==0){
+						plane.img=imgs.player1;
+					}else{
+						plane.img=imgs.player2;
+					}
+					//绘制
+					ctx.drawImage(plane.img,plane.x,plane.y,plane.w,plane.h);
+					ctx.rect(plane.x,plane.y,plane.w,plane.h);
+					requestAnimationFrame(drawBG);
+				}();
+				
+				//拖拽
+				//事件监听手指事件
+				document.addEventListener("touchstart",function(ev){
+					//获取手指
+					var t=ev.touches[0];
+					//获取初始坐标
+					var touchX=t.pageX;
+					var touchY=t.pageY;
+					var playerX=plane.x;
+					var playerY=plane.y;
+					//判断手指按下是否在当前路径下
+					if(ctx.isPointInPath(touchX,touchY)){
+						plane.isMove=true;
+					}else{
+						plane.isMove=false;
+					}
+					//手指滑动事件
+					document.addEventListener("touchmove",function(ev){
+						if(plane.isMove){
+							var t=ev.touches[0];
+							//实时获取移动量
+							var nowX=t.pageX;
+							var nowY=t.pageY;
+							//获取偏移量
+							var chaX=nowX-touchX;
+							var chaY=nowY-touchY;
+							//给飞机改变位置
+							plane.x=chaX+playerX;
+							plane.y=chaY+playerY;
+							//设置边界
+							if(plane.x<0){
+								plane.x=0;
+							}else if(plane.x>canv.width-plane.w){
+								plane.x=canv.width-plane.w;
+							}
+							if(plane.y<0){
+								plane.y=0;
+							}else if(plane.y>canv.height-plane.h){
+								plane.y=canv.height-plane.h;
+							}
+						}
+					});
+				});
+				//碰撞检测
+				function pz(zd,dr){
+					//子弹的左边发生碰撞
+					var isLeft=zd.x<=dr.x+dr.w;
+					//右边碰撞
+					var isRight=zd.x+zd.w>=dr.x;
+					//上边碰撞
+					var isTop=zd.y<=dr.y+dr.h;
+					//下边碰撞
+					var isBottom=zd.y+zd.h>=dr.y;
+					if(isTop && isLeft && isRight && isBottom){
+						return true;
+					}else{
+						return false;
+					}
+				}
+			}
+		</script>
+	</body>
+</html>
+

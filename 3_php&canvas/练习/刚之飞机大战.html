@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<style type="text/css">
+			*{
+				margin: 0;
+			}
+			body{
+				overflow: hidden;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="canv" width="" height=""></canvas>
+		<script src="../js/封装函数.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			var canv = document.getElementById("canv");
+			canv.width = document.documentElement.clientWidth;
+			canv.height = document.documentElement.clientHeight;
+			var ctx = canv.getContext("2d");
+			
+			loadImage({
+				bg2:"../img/tanke/background_2.png",
+				bullet:"../img/tanke/bullet1.png",
+				player1:"../img/tanke/hero_fly_1.png",
+				player2:"../img/tanke/hero_fly_2.png",
+				enemy1Fly:"../img/tanke/enemy1_fly_1.png",
+				enemy1FlyDown1:"../img/tanke/enemy1_blowup_1.png",
+				enemy1FlyDown2:"../img/tanke/enemy1_blowup_2.png",
+				enemy1FlyDown3:"../img/tanke/enemy1_blowup_3.png",
+				enemy2Fly:"../img/tanke/enemy3_fly_1.png",
+				enemy2FlyDown1:"../img/tanke/enemy3_blowup_1.png",
+				enemy2FlyDown2:"../img/tanke/enemy3_blowup_2.png",
+				enemy2FlyDown3:"../img/tanke/enemy3_blowup_3.png",
+				enemy2FlyDown4:"../img/tanke/enemy3_blowup_4.png",
+				enemy3Fly:"../img/tanke/enemy2_fly_1.png",
+				enemy3FlyDown1:"../img/tanke/enemy2_blowup_1.png",
+				enemy3FlyDown2:"../img/tanke/enemy2_blowup_2.png",
+				enemy3FlyDown3:"../img/tanke/enemy2_blowup_3.png",
+				enemy3FlyDown4:"../img/tanke/enemy2_blowup_4.png",
+				enemy3FlyDown5:"../img/tanke/enemy2_blowup_5.png",
+				
+			},{
+				progress:function(sc){
+					console.log(sc+"%");
+				},
+				complete:main
+			})
+			
+			function main(imgs){
+				//获取背景图片
+				var bg = imgs.bg2;
+				//纵向偏移量
+				var offsetY = 0;
+				//控制频率
+				var count = 0;
+				//装生成子弹的数组
+				var bulletArr = [];
+				//装生成敌机的数组
+				var enemyArr = [];
+				
+				//主角类
+				function Plane(){
+					this.x = canv.width/2 - imgs.player1.width/2;
+					this.y = canv.height - imgs.player1.height;
+					this.w = imgs.player1.width;
+					this.h = imgs.player1.height;
+					//当前显示的图片
+					this.img = imgs.player1;
+					//判断是否可以拖动
+					this.isMove = true;
+				}
+				var plane = new Plane();
+				
+				//子弹类
+				function Bullet(){
+					this.x = plane.x + plane.w/2 - imgs.bullet.width/2;
+					this.y = plane.y - 20;
+					this.w = imgs.bullet.width;
+					this.h = imgs.bullet.height;
+					this.speed = 10;
+					this.isClear = false;
+				}
+				//子弹移动原型方法
+				Bullet.prototype.move = function(){
+					this.y -= this.speed;
+					if(this.y + this.h < 0){
+						this.isClear = true;
+					}
+				}
+				//画
+				Bullet.prototype.drawBullet = function(){
+					ctx.beginPath();
+					ctx.drawImage(imgs.bullet,this.x,this.y,this.w,this.h);
+				}
+				
+				//敌机类
+				function Enemy(){
+					this.img = imgs.enemy1Fly;
+					this.w = this.img.width;
+					this.h = this.img.height
+					this.x = rand(0,canv.width-this.w)
+					this.y = -this.h;
+					this.type = 1;
+					this.speed = 8;
+					this.blood = 1;
+					this.score = 1;
+					//超出边界清除
+					this.isClear = false;
+					//被打死
+					this.isDie = false;
+					//爆炸图片index
+					this.index = 1;
+					//爆炸一共几张
+					this.maxIndex = 3;
+				}
+				//敌机移动
+				Enemy.prototype.move = function(){
+					//如果没死,移动
+					if(!this.isDie){
+						this.y += this.speed;
+						if(this.y > canv.height){
+							this.isClear = true;
+						}
+					}
+				}
+				
+				//画敌机
+				Enemy.prototype.drawEnemy = function(){
+					ctx.beginPath();
+					if(!this.isDie){
+						ctx.drawImage(this.img,this.x,this.y,this.w,this.h);
+					}else{
+						ctx.drawImage(imgs["enemy"+this.type+"FlyDown"+this.index],this.x,this.y,this.w,this.h);
+					}
+				}
+				//敌机爆炸
+				Enemy.prototype.enemyBoom = function(){
+						this.index ++;
+						//爆炸结束，清除
+						if(this.index == this.maxIndex){
+							this.isClear = true;
+						}
+				}
+				
+				//改变生成敌机的类型
+				Enemy.prototype.changeType = function(typeNum){
+					this.type = typeNum;
+					switch(this.type){
+						case 1:
+						break;
+						case 2:
+							this.img = imgs.enemy2Fly;
+							this.w = this.img.width;
+							this.h = this.img.height
+							this.x = rand(0,canv.width-this.w)
+							this.y = -this.h;
+							this.speed = 4;
+							this.blood = 4;
+							this.score = 2;	
+							this.index = 1;
+							this.maxIndex = 4;
+						break;
+						case 3:
+							this.img = imgs.enemy3Fly;
+							this.w = this.img.width;
+							this.h = this.img.height
+							this.x = rand(0,canv.width-this.w)
+							this.y = -this.h;
+							this.speed = 1;
+							this.blood = 8;
+							this.score = 3;	
+							this.isPZ = false;
+							this.index = 1;
+							this.maxIndex = 4;
+						break;
+					}
+				}
+				
+				//绘制
+				!function draw(){
+					//递增
+					offsetY+=3;
+					count++;
+					//如果超出，则回到起点
+					if(offsetY > canv.height){
+						offsetY = 0;
+					}
+					canv.width = canv.width;
+					//绘制背景图片
+					ctx.drawImage(bg,0,offsetY,canv.width,canv.height);
+					ctx.drawImage(bg,0,offsetY-canv.height,canv.width,canv.height);
+					
+					
+					if(count%50 == 0){
+						var newEnemy = new Enemy();
+						if(count%100 == 0){
+							newEnemy.changeType(2);
+						}
+						if(count%200 == 0){
+							newEnemy.changeType(3);
+						}
+						enemyArr.push(newEnemy);
+					}
+					
+					
+					for(var i = 0; i < enemyArr.length; i++){
+						enemyArr[i].move();
+						enemyArr[i].drawEnemy();
+						//超出清除
+						if(enemyArr[i].isClear){
+							enemyArr.splice(i,1);
+							i--;
+						}
+					}
+					
+					
+					//控制子弹发射频率
+					if(count%20 == 0){
+						//生成子弹
+						var newBullet = new Bullet();
+						bulletArr.push(newBullet);
+					}
+					//发射子弹
+					for(var i = 0; i < bulletArr.length; i++){
+						bulletArr[i].move();
+						bulletArr[i].drawBullet();
+						// 超出边界，从数组删除
+						if(bulletArr[i].isClear){
+							bulletArr.splice(i,1);
+							i--;
+						}
+					}
+					
+					//判断子弹打中敌机
+					for(var i = 0; i < bulletArr.length; i++){
+						for(var j = 0; j < enemyArr.length; j++){
+							if(pz(bulletArr[i],enemyArr[j])){
+								bulletArr.splice(i,1);
+								enemyArr[j].blood --;
+								enemyArr[j].isPZ = true;
+								//血量小于0 ，死亡
+								if(enemyArr[j].blood <= 0){
+									enemyArr[j].isDie = true;
+								}
+								break;
+							}
+							//如果死亡
+							if(enemyArr[j].isDie){
+								//爆炸
+								enemyArr[j].enemyBoom();
+							}
+						}
+					}
+				
+					
+					
+					//控制飞机切换喷火的频率
+					if(count%5 == 0){
+						plane.img = imgs.player2;	
+					}else{
+						plane.img = imgs.player1;
+					}
+					ctx.drawImage(plane.img,plane.x,plane.y,plane.w,plane.h);
+					//代表飞机的路径
+					ctx.rect(plane.x,plane.y,plane.w,plane.h);
+
+					
+					requestAnimationFrame(draw);
+				}();
+				
+				document.addEventListener("touchstart",function(ev){
+					//获取手指
+					var t = ev.touches[0];
+					var touchX = t.pageX;
+					var touchY = t.pageY;
+					var playerX = plane.x;
+					var playerY = plane.y;
+					//判断手指按下，是否在当前canvas路径下
+					if(ctx.isPointInPath(touchX,touchY)){
+						plane.isMove = true;
+					}else{
+						plane.isMove = false;
+					}
+					document.addEventListener("touchmove",function(ev){
+					 	if(plane.isMove){
+						 	var t = ev.touches[0];
+						 	var nowX = t.pageX;
+						 	var nowY = t.pageY;
+						 	var chaX = t.pageX - touchX;
+						 	var chaY = t.pageY - touchY;
+						 	
+						 	plane.x = chaX + playerX;
+						 	plane.y = chaY + playerY;
+						 	
+						 	//判断边界
+						 	if(plane.x < 0){
+						 		plane.x = 0;
+						 	}else if(plane.x > canv.width - plane.w){
+						 		plane.x = canv.width - plane.w;
+						 	}
+						 	if(plane.y < 0){
+						 		plane.y = 0;
+						 	}else if(plane.y > canv.height - plane.h){
+						 		plane.y = canv.height - plane.h;
+						 	}
+					 	}
+					 })
+				})
+				
+				
+				function rand(min,max){
+					return Math.floor(Math.random()*(max+1-min)+min);
+				}
+				//碰撞封装方法
+				   function pz(a, b) {
+				        var isLeft = a.x  <= b.x + b.w;
+				        var isRight = a.x + a.w >= b.x;
+				        var isTop = a.y  <= b.y + b.h;
+				        var isBottom = a.y + a.h >= b.y ;
+				        if (isLeft && isRight && isTop && isBottom) {
+				            return true
+				        } else {
+				            return false
+				        }
+				    }
+				
+			}
+		</script>
+	</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
